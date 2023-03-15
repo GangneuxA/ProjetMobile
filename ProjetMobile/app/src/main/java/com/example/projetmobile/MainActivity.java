@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tResultat;
     Button btn;
     EditText e;
+    CheckBox c1,c2;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +74,23 @@ public class MainActivity extends AppCompatActivity {
         e=(EditText) findViewById (R.id.editVille);
         String ville =e.getText().toString();
         tResultat=(TextView) findViewById(R.id.tResultat);
+        c1 = (CheckBox) findViewById(R.id.checkboxPeople);
+        c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
 
-        RequestTask r=new RequestTask();
-        r.execute(ville);
+        if(c1.isChecked()){
+            RequestTaskPeople r=new RequestTaskPeople();
+            r.execute(ville);
+        }
+        if(c2.isChecked()){
+            RequestTaskPlanet r = new RequestTaskPlanet();
+            r.execute(ville);
+        }
+
     }
-    private class RequestTask extends AsyncTask<String, Void, String> {
+    private class RequestTaskPeople extends AsyncTask<String, Void, String> {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
 //  lance la requète
+
         protected String doInBackground(String... ville) {
             String response = requete(ville[0]);
             return response;
@@ -118,6 +130,70 @@ public class MainActivity extends AppCompatActivity {
                 response+="\n"+jsoResult.getJSONObject(i).getString("name");
                 response+="\n"+jsoResult.getJSONObject(i).getString("gender");
                 response+="\n"+jsoResult.getJSONObject(i).getString("birth_year");
+                //response+="\n"+jsoResult.getJSONObject(i).getString("homeworld");
+                //response+="\n"+jsoResult.getJSONObject(i).getString("films");
+            }
+
+
+            return response;
+
+        }
+        // Méthode appelée lorsque la tâche de fond sera terminée
+        //  Affiche le résultat
+        protected void onPostExecute(String result) {
+            JSONObject toDecode = null;
+            try {
+                toDecode = new JSONObject(result);
+                tResultat.setText(decodeJSON(toDecode));
+            } catch (Exception e) {
+                tResultat.setText("error parsing JSON");
+            }
+        }
+    }
+
+    private class RequestTaskPlanet extends AsyncTask<String, Void, String> {
+        // Le corps de la tâche asynchrone (exécuté en tâche de fond)
+//  lance la requète
+
+        protected String doInBackground(String... ville) {
+            String response = requete(ville[0]);
+            return response;
+        }
+        private String requete(String ville) {
+            String response = "";
+            try {
+                HttpURLConnection connection = null;
+                URL url = new URL("https://swapi.dev/api/planets/?search="+
+                        ville);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                InputStream inputStream = connection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String ligne = bufferedReader.readLine() ;
+                while (ligne!= null){
+                    response+=ligne;
+                    ligne = bufferedReader.readLine();
+                }
+            } catch (UnsupportedEncodingException e) {
+                response = "problème d'encodage";
+            } catch (MalformedURLException e) {
+                response = "problème d'URL ";
+            } catch (IOException e) {
+                response = "problème de connexion ";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        private String decodeJSON(JSONObject jso) throws Exception {
+            String response = "";
+            JSONArray jsoResult=jso.getJSONArray("results");
+            for(int i=0; i<jsoResult.length();i++){
+                response+="\n"+jsoResult.getJSONObject(i).getString("name");
+                response+="\n"+jsoResult.getJSONObject(i).getString("population");
+                //response+="\n"+jsoResult.getJSONObject(i).getString("birth_year");
                 //response+="\n"+jsoResult.getJSONObject(i).getString("homeworld");
                 //response+="\n"+jsoResult.getJSONObject(i).getString("films");
             }
