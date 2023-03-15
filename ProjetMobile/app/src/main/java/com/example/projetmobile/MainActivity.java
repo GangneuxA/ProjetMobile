@@ -72,18 +72,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void go(View view) {
         e=(EditText) findViewById (R.id.editVille);
-        String ville =e.getText().toString();
+        String req =e.getText().toString();
         tResultat=(TextView) findViewById(R.id.tResultat);
         c1 = (CheckBox) findViewById(R.id.checkboxPeople);
         c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
 
         if(c1.isChecked()){
             RequestTaskPeople r=new RequestTaskPeople();
-            r.execute(ville);
+            r.execute(req);
         }
         if(c2.isChecked()){
             RequestTaskPlanet r = new RequestTaskPlanet();
-            r.execute(ville);
+            r.execute(req);
         }
 
     }
@@ -91,16 +91,16 @@ public class MainActivity extends AppCompatActivity {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
 //  lance la requète
 
-        protected String doInBackground(String... ville) {
-            String response = requete(ville[0]);
+        protected String doInBackground(String... req) {
+            String response = requete(req[0]);
             return response;
         }
-        private String requete(String ville) {
+        private String requete(String req) {
             String response = "";
             try {
                 HttpURLConnection connection = null;
                 URL url = new URL("https://swapi.dev/api/people/?search="+
-                        ville);
+                        req);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
@@ -155,16 +155,16 @@ public class MainActivity extends AppCompatActivity {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
 //  lance la requète
 
-        protected String doInBackground(String... ville) {
-            String response = requete(ville[0]);
+        protected String doInBackground(String... req) {
+            String response = requete(req[0]);
             return response;
         }
-        private String requete(String ville) {
+        private String requete(String req) {
             String response = "";
             try {
                 HttpURLConnection connection = null;
                 URL url = new URL("https://swapi.dev/api/planets/?search="+
-                        ville);
+                        req);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
