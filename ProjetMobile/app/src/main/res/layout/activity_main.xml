@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/lVille"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ville"
+            android:textColor="#00AAFF"
+            android:textSize="20sp"
+            android:padding="10dp"/>
+
+        <EditText
+            android:id="@+id/editVille"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+        </EditText>
+
+        <Button
+            android:id="@+id/bGo"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="go"
+            android:textColor="#0088FF"
+            android:textSize="16sp"
+            android:onClick="go"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tResultat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="#00AAFF"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp" />
+
+
+</LinearLayout>
