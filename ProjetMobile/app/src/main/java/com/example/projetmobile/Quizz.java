@@ -8,10 +8,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class Quizz extends AppCompatActivity {
 
+    DBHandler db;
+    LinearLayout ll ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +26,23 @@ public class Quizz extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        db = new DBHandler(this);
+    }
+
+    public void add(View v){
+        EditText e = (EditText) findViewById(R.id.Reponse);
+        String res = e.getText().toString();
+        db.insertQ(res,"test");
+        db.close();
+    }
+
+    public void aff(View v) {
+        List<String> responses = db.selectAll();
+        for (String response : responses) {
+            TextView tv = new TextView(this);
+            tv.setText("Name: " + response + "\n");
+            ll.addView(tv);
+        }
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -47,4 +71,9 @@ public class Quizz extends AppCompatActivity {
                 finish();
                 return (true); }
         return true; }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+    }
 }

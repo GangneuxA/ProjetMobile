@@ -33,6 +33,27 @@
         android:textSize="20dp"
         android:layout_below="@id/Question"/>
 
+    <Button
+        android:id="@+id/valider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:text="Valider"
+        android:layout_below="@+id/Reponse"
+        android:layout_centerHorizontal="true"
+        android:onClick="add"/>
+    <Button
+        android:id="@+id/test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:text="afficher"
+        android:layout_below="@+id/valider"
+        android:layout_centerHorizontal="true"
+        android:onClick="aff"/>
+
     <TextView
         android:id="@+id/Score"
         android:layout_width="match_parent"
