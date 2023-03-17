@@ -29,6 +29,7 @@
            android:layout_height="match_parent"
            android:textColor="@color/material_dynamic_tertiary20"
            android:textSize="30dp"
+           android:text="BIENVENUE !!"
            />
    </LinearLayout>
 
