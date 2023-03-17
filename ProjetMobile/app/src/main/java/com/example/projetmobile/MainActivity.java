@@ -74,7 +74,9 @@ public class MainActivity extends AppCompatActivity {
         e=(EditText) findViewById (R.id.editVille);
         String req =e.getText().toString();
         tResultat=(TextView) findViewById(R.id.tResultat);
-        c1 = (CheckBox) findViewById(R.id.checkboxPeople);
+        RequestTask r=new RequestTask();
+        r.execute(req);
+        /*c1 = (CheckBox) findViewById(R.id.checkboxPeople);
         c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
 
         if(c1.isChecked()){
@@ -84,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
         if(c2.isChecked()){
             RequestTaskPlanet r = new RequestTaskPlanet();
             r.execute(req);
-        }
+        }*/
 
     }
-    private class RequestTaskPeople extends AsyncTask<String, Void, String> {
+    private class RequestTask extends AsyncTask<String, Void, String> {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
 //  lance la requète
 
@@ -96,11 +98,21 @@ public class MainActivity extends AppCompatActivity {
             return response;
         }
         private String requete(String req) {
+            c1 = (CheckBox) findViewById(R.id.checkboxPeople);
+            c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
             String response = "";
             try {
                 HttpURLConnection connection = null;
-                URL url = new URL("https://swapi.dev/api/people/?search="+
-                        req);
+                URL url=null;
+                if (c1.isChecked()) {
+                    url = new URL("https://swapi.dev/api/people/?search=" +
+                            req);
+                }
+                if (c2.isChecked()) {
+                    url = new URL("https://swapi.dev/api/planets/?search=" +
+                            req);
+                }
+
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
@@ -124,81 +136,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private String decodeJSON(JSONObject jso) throws Exception {
+
+            c1 = (CheckBox) findViewById(R.id.checkboxPeople);
+            c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
             String response = "";
             JSONArray jsoResult=jso.getJSONArray("results");
-            for(int i=0; i<jsoResult.length();i++){
-                response+="\n"+jsoResult.getJSONObject(i).getString("name");
-                response+="\n"+jsoResult.getJSONObject(i).getString("gender");
-                response+="\n"+jsoResult.getJSONObject(i).getString("birth_year");
-                //response+="\n"+jsoResult.getJSONObject(i).getString("homeworld");
-                //response+="\n"+jsoResult.getJSONObject(i).getString("films");
-            }
 
-
-            return response;
-
-        }
-        // Méthode appelée lorsque la tâche de fond sera terminée
-        //  Affiche le résultat
-        protected void onPostExecute(String result) {
-            JSONObject toDecode = null;
-            try {
-                toDecode = new JSONObject(result);
-                tResultat.setText(decodeJSON(toDecode));
-            } catch (Exception e) {
-                tResultat.setText("error parsing JSON");
-            }
-        }
-    }
-
-    private class RequestTaskPlanet extends AsyncTask<String, Void, String> {
-        // Le corps de la tâche asynchrone (exécuté en tâche de fond)
-//  lance la requète
-
-        protected String doInBackground(String... req) {
-            String response = requete(req[0]);
-            return response;
-        }
-        private String requete(String req) {
-            String response = "";
-            try {
-                HttpURLConnection connection = null;
-                URL url = new URL("https://swapi.dev/api/planets/?search="+
-                        req);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                InputStream inputStream = connection.getInputStream();
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String ligne = bufferedReader.readLine() ;
-                while (ligne!= null){
-                    response+=ligne;
-                    ligne = bufferedReader.readLine();
+            if (c1.isChecked()) {
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("gender");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
+                    //response+="\n"+jsoResult.getJSONObject(i).getString("homeworld");
+                    //response+="\n"+jsoResult.getJSONObject(i).getString("films");
                 }
-            } catch (UnsupportedEncodingException e) {
-                response = "problème d'encodage";
-            } catch (MalformedURLException e) {
-                response = "problème d'URL ";
-            } catch (IOException e) {
-                response = "problème de connexion ";
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-            return response;
-        }
-
-        private String decodeJSON(JSONObject jso) throws Exception {
-            String response = "";
-            JSONArray jsoResult=jso.getJSONArray("results");
-            for(int i=0; i<jsoResult.length();i++){
-                response+="\n"+jsoResult.getJSONObject(i).getString("name");
-                response+="\n"+jsoResult.getJSONObject(i).getString("population");
-                //response+="\n"+jsoResult.getJSONObject(i).getString("birth_year");
-                //response+="\n"+jsoResult.getJSONObject(i).getString("homeworld");
-                //response+="\n"+jsoResult.getJSONObject(i).getString("films");
+            if (c2.isChecked()) {
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("population");
+                }
             }
-
-
             return response;
 
         }
