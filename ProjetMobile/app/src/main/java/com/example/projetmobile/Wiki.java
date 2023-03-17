@@ -26,13 +26,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.BreakIterator;
+import java.net.URLEncoder;
+
 
 public class Wiki extends AppCompatActivity {
 
     TextView tResultat, iResultat;
     Button btn;
     EditText e;
+
     RadioButton c1,c2, c3, c4, c5, c6;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,6 @@ public class Wiki extends AppCompatActivity {
     public void go(View view) {
         e=(EditText) findViewById (R.id.recherche);
         String req =e.getText().toString();
-        iResultat=(TextView) findViewById(R.id.iResultat);
         tResultat=(TextView) findViewById(R.id.tResultat);
         Wiki.RequestTask r=new Wiki.RequestTask();
         r.execute(req);
@@ -83,7 +84,7 @@ public class Wiki extends AppCompatActivity {
     private class RequestTask extends AsyncTask<String, Void, String> {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
 //  lance la requète
-
+        String retour="";
         protected String doInBackground(String... req) {
             String response = requete(req[0]);
             return response;
@@ -101,27 +102,27 @@ public class Wiki extends AppCompatActivity {
                 URL url=null;
                 if (c1.isChecked()) {
                     url = new URL("https://swapi.dev/api/people/?search=" +
-                            req);
+                            URLEncoder.encode(req,"utf-8"));
                 }
                 if (c2.isChecked()) {
                     url = new URL("https://swapi.dev/api/planets/?search=" +
-                            req);
+                            URLEncoder.encode(req,"utf-8"));
                 }
                 if (c3.isChecked()) {
                     url = new URL("https://swapi.dev/api/starships/?search=" +
-                            req);
+                            URLEncoder.encode(req,"utf-8"));
                 }
                 if (c4.isChecked()) {
                     url = new URL("https://swapi.dev/api/vehicles/?search=" +
-                            req);
+                            URLEncoder.encode(req,"utf-8"));
                 }
                 if (c5.isChecked()) {
                     url = new URL("https://swapi.dev/api/species/?search=" +
-                            req);
+                            URLEncoder.encode(req,"utf-8"));
                 }
                 if (c6.isChecked()){
                     url = new URL("https://swapi.dev/api/films/?search=" +
-                            req);
+                            URLEncoder.encode(req,"utf-8"));
                 }
 
                 connection = (HttpURLConnection) url.openConnection();
@@ -163,9 +164,7 @@ public class Wiki extends AppCompatActivity {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
                     response += "\n" + jsoResult.getJSONObject(i).getString("gender");
                     response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
-                    //RequestTaskIntern Ri=new RequestTaskIntern();
-                    //Ri.execute(jsoResult.getJSONObject(i).getString("homeworld"));
-                   // response += "\n" + iResultat.getText();
+                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld"));
                     //response+="\n"+jsoResult.getJSONObject(i).getString("films");
                 }
             }
@@ -202,8 +201,8 @@ public class Wiki extends AppCompatActivity {
                 }
             }
             return response;
-
         }
+
         // Méthode appelée lorsque la tâche de fond sera terminée
         //  Affiche le résultat
         protected void onPostExecute(String result) {
@@ -214,27 +213,14 @@ public class Wiki extends AppCompatActivity {
             } catch (Exception e) {
                 tResultat.setText("error parsing JSON");
             }
+
         }
-    }
-
-    private class RequestTaskIntern extends AsyncTask<String, Void, String> {
-        // Le corps de la tâche asynchrone (exécuté en tâche de fond)
-//  lance la requète
-
-        protected String doInBackground(String... req) {
-            String response = requete(req[0]);
-            return response;
-        }
-        private String requete(String req) {
-
-            String response = "";
+        protected String reqI(String test) throws MalformedURLException {
+            String response="";
             try {
+
                 HttpURLConnection connection = null;
-
-
-                URL url = new URL(req);
-
-
+                URL url = new URL(URLEncoder.encode(test,"utf-8"));
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
@@ -245,6 +231,14 @@ public class Wiki extends AppCompatActivity {
                     response+=ligne;
                     ligne = bufferedReader.readLine();
                 }
+
+                JSONObject jso = new JSONObject(response);
+                JSONArray jsoResult=jso.getJSONArray("results");
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    retour += jsoResult.getJSONObject(i).getString("name");
+                }
+
+
             } catch (UnsupportedEncodingException e) {
                 response = "problème d'encodage";
             } catch (MalformedURLException e) {
@@ -254,32 +248,8 @@ public class Wiki extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return response;
+            return retour;
         }
 
-        private String decodeJSON(JSONObject jso) throws Exception {
-
-            String response = "";
-            JSONArray jsoResult=jso.getJSONArray("results");
-
-                for (int i = 0; i < jsoResult.length(); i++) {
-                    response += jsoResult.getJSONObject(i).getString("name");
-            }
-
-            return response;
-
-        }
-        // Méthode appelée lorsque la tâche de fond sera terminée
-        //  Affiche le résultat
-        protected void onPostExecute(String result) {
-            JSONObject toDecode = null;
-            try {
-                toDecode = new JSONObject(result);
-                iResultat.setText(decodeJSON(toDecode));
-            } catch (Exception e) {
-                iResultat.setText("error parsing JSON");
-            }
-        }
     }
-
 }
