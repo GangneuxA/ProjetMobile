@@ -104,16 +104,24 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tResultat"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="#00AAFF"
-        android:padding="5dp"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="30dp" />
+        android:id="@+id/Scroll">
+
+        <TextView
+            android:id="@+id/tResultat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="#00AAFF"
+            android:padding="5dp"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="30dp" />
+
+    </ScrollView>
+
 
 
 </LinearLayout>
