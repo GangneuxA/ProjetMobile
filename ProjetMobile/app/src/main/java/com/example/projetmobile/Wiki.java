@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,6 +28,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class Wiki extends AppCompatActivity {
@@ -98,7 +101,7 @@ public class Wiki extends AppCompatActivity {
             c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             try {
-                HttpURLConnection connection = null;
+                HttpsURLConnection connection = null;
                 URL url=null;
                 if (c1.isChecked()) {
                     url = new URL("https://swapi.dev/api/people/?search=" +
@@ -125,7 +128,7 @@ public class Wiki extends AppCompatActivity {
                             URLEncoder.encode(req,"utf-8"));
                 }
 
-                connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpsURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -157,47 +160,46 @@ public class Wiki extends AppCompatActivity {
             c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             JSONArray jsoResult=jso.getJSONArray("results");
-            //JSONArray jsoFilms=jso.getJSONArray("films");
 
             if (c1.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
                     response += "\n" + jsoResult.getJSONObject(i).getString("gender");
                     response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
-                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld"));
-                    //response+="\n"+jsoResult.getJSONObject(i).getString("films");
+                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld")) + "\n" ;
+
                 }
             }
             if (c2.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("population");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("population") + "\n";
                 }
             }
             if (c3.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
                     response += "\n" + jsoResult.getJSONObject(i).getString("model");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("starship_class");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("starship_class") + "\n";
                 }
             }
             if (c4.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("model");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("model") + "\n";
                 }
             }
             if (c5.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("language");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("language") + "\n";
                 }
             }
             if (c6.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("title");
                     response += "\n" + jsoResult.getJSONObject(i).getString("director");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("release_date");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("release_date") + "\n";
                 }
             }
             return response;
@@ -215,39 +217,40 @@ public class Wiki extends AppCompatActivity {
             }
 
         }
-        protected String reqI(String test) throws MalformedURLException {
-            String response="";
+        protected String reqI(String test) throws MalformedURLException, JSONException {
+            String response2="";
             try {
 
-                HttpURLConnection connection = null;
-                URL url = new URL(URLEncoder.encode(test,"utf-8"));
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                InputStream inputStream = connection.getInputStream();
+                HttpsURLConnection connection2 = null;
+                URL url2 = new URL(URLEncoder.encode(test,"utf-8"));
+                connection2 = (HttpsURLConnection) url2.openConnection();
+                connection2.setRequestMethod("GET");
+                InputStream inputStream = connection2.getInputStream();
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String ligne = bufferedReader.readLine() ;
-                while (ligne!= null){
-                    response+=ligne;
-                    ligne = bufferedReader.readLine();
+                BufferedReader bufferedReader2 = new BufferedReader(inputStreamReader);
+                String ligne2 = bufferedReader2.readLine() ;
+
+                while (ligne2!= null){
+                    response2+=ligne2;
+                    ligne2 = bufferedReader2.readLine();
                 }
 
-                JSONObject jso = new JSONObject(response);
-                JSONArray jsoResult=jso.getJSONArray("results");
-                for (int i = 0; i < jsoResult.length(); i++) {
-                    retour += jsoResult.getJSONObject(i).getString("name");
+                JSONObject jso = new JSONObject(response2);
+                JSONArray jsoResult2=jso.getJSONArray("results");
+                for (int i = 0; i < jsoResult2.length(); i++) {
+                    retour += jsoResult2.getJSONObject(i).getString("name");
                 }
-
 
             } catch (UnsupportedEncodingException e) {
-                response = "problème d'encodage";
+                response2 = "problème d'encodage";
             } catch (MalformedURLException e) {
-                response = "problème d'URL ";
+                response2 = "problème d'URL ";
             } catch (IOException e) {
-                response = "problème de connexion ";
+                response2 = "problème de connexion ";
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return retour;
         }
 
