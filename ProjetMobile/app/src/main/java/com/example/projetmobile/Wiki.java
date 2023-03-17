@@ -26,10 +26,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.BreakIterator;
 
 public class Wiki extends AppCompatActivity {
 
-    TextView tResultat;
+    TextView tResultat, iResultat;
     Button btn;
     EditText e;
     RadioButton c1,c2, c3, c4, c5, c6;
@@ -74,6 +75,7 @@ public class Wiki extends AppCompatActivity {
     public void go(View view) {
         e=(EditText) findViewById (R.id.recherche);
         String req =e.getText().toString();
+        iResultat=(TextView) findViewById(R.id.iResultat);
         tResultat=(TextView) findViewById(R.id.tResultat);
         Wiki.RequestTask r=new Wiki.RequestTask();
         r.execute(req);
@@ -154,13 +156,16 @@ public class Wiki extends AppCompatActivity {
             c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             JSONArray jsoResult=jso.getJSONArray("results");
+            //JSONArray jsoFilms=jso.getJSONArray("films");
 
             if (c1.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
                     response += "\n" + jsoResult.getJSONObject(i).getString("gender");
                     response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
-                    //response+="\n"+jsoResult.getJSONObject(i).getString("homeworld");
+                    //RequestTaskIntern Ri=new RequestTaskIntern();
+                    //Ri.execute(jsoResult.getJSONObject(i).getString("homeworld"));
+                   // response += "\n" + iResultat.getText();
                     //response+="\n"+jsoResult.getJSONObject(i).getString("films");
                 }
             }
@@ -196,9 +201,6 @@ public class Wiki extends AppCompatActivity {
                     response += "\n" + jsoResult.getJSONObject(i).getString("release_date");
                 }
             }
-
-
-
             return response;
 
         }
@@ -211,6 +213,71 @@ public class Wiki extends AppCompatActivity {
                 tResultat.setText(decodeJSON(toDecode));
             } catch (Exception e) {
                 tResultat.setText("error parsing JSON");
+            }
+        }
+    }
+
+    private class RequestTaskIntern extends AsyncTask<String, Void, String> {
+        // Le corps de la tâche asynchrone (exécuté en tâche de fond)
+//  lance la requète
+
+        protected String doInBackground(String... req) {
+            String response = requete(req[0]);
+            return response;
+        }
+        private String requete(String req) {
+
+            String response = "";
+            try {
+                HttpURLConnection connection = null;
+
+
+                URL url = new URL(req);
+
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                InputStream inputStream = connection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String ligne = bufferedReader.readLine() ;
+                while (ligne!= null){
+                    response+=ligne;
+                    ligne = bufferedReader.readLine();
+                }
+            } catch (UnsupportedEncodingException e) {
+                response = "problème d'encodage";
+            } catch (MalformedURLException e) {
+                response = "problème d'URL ";
+            } catch (IOException e) {
+                response = "problème de connexion ";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        private String decodeJSON(JSONObject jso) throws Exception {
+
+            String response = "";
+            JSONArray jsoResult=jso.getJSONArray("results");
+
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += jsoResult.getJSONObject(i).getString("name");
+            }
+
+            return response;
+
+        }
+        // Méthode appelée lorsque la tâche de fond sera terminée
+        //  Affiche le résultat
+        protected void onPostExecute(String result) {
+            JSONObject toDecode = null;
+            try {
+                toDecode = new JSONObject(result);
+                iResultat.setText(decodeJSON(toDecode));
+            } catch (Exception e) {
+                iResultat.setText("error parsing JSON");
             }
         }
     }
