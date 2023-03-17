@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tResultat;
     Button btn;
     EditText e;
-    CheckBox c1,c2;
+    RadioButton c1,c2, c3, c4, c5, c6;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,23 +72,11 @@ public class MainActivity extends AppCompatActivity {
         return true; }
 
     public void go(View view) {
-        e=(EditText) findViewById (R.id.editVille);
+        e=(EditText) findViewById (R.id.recherche);
         String req =e.getText().toString();
         tResultat=(TextView) findViewById(R.id.tResultat);
         RequestTask r=new RequestTask();
         r.execute(req);
-        /*c1 = (CheckBox) findViewById(R.id.checkboxPeople);
-        c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
-
-        if(c1.isChecked()){
-            RequestTaskPeople r=new RequestTaskPeople();
-            r.execute(req);
-        }
-        if(c2.isChecked()){
-            RequestTaskPlanet r = new RequestTaskPlanet();
-            r.execute(req);
-        }*/
-
     }
     private class RequestTask extends AsyncTask<String, Void, String> {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
@@ -98,8 +87,12 @@ public class MainActivity extends AppCompatActivity {
             return response;
         }
         private String requete(String req) {
-            c1 = (CheckBox) findViewById(R.id.checkboxPeople);
-            c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
+            c1 = (RadioButton) findViewById(R.id.Rpeople);
+            c2 = (RadioButton) findViewById(R.id.Rplanets);
+            c3 = (RadioButton) findViewById(R.id.Rship);
+            c4 = (RadioButton) findViewById(R.id.Rvehicles);
+            c5 = (RadioButton) findViewById(R.id.Rspecies);
+            c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             try {
                 HttpURLConnection connection = null;
@@ -110,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (c2.isChecked()) {
                     url = new URL("https://swapi.dev/api/planets/?search=" +
+                            req);
+                }
+                if (c3.isChecked()) {
+                    url = new URL("https://swapi.dev/api/starships/?search=" +
+                            req);
+                }
+                if (c4.isChecked()) {
+                    url = new URL("https://swapi.dev/api/vehicles/?search=" +
+                            req);
+                }
+                if (c5.isChecked()) {
+                    url = new URL("https://swapi.dev/api/species/?search=" +
+                            req);
+                }
+                if (c6.isChecked()){
+                    url = new URL("https://swapi.dev/api/films/?search=" +
                             req);
                 }
 
@@ -137,8 +146,12 @@ public class MainActivity extends AppCompatActivity {
 
         private String decodeJSON(JSONObject jso) throws Exception {
 
-            c1 = (CheckBox) findViewById(R.id.checkboxPeople);
-            c2 = (CheckBox) findViewById(R.id.checkboxPlanet);
+            c1 = (RadioButton) findViewById(R.id.Rpeople);
+            c2 = (RadioButton) findViewById(R.id.Rplanets);
+            c3 = (RadioButton) findViewById(R.id.Rship);
+            c4 = (RadioButton) findViewById(R.id.Rvehicles);
+            c5 = (RadioButton) findViewById(R.id.Rspecies);
+            c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             JSONArray jsoResult=jso.getJSONArray("results");
 
@@ -157,6 +170,35 @@ public class MainActivity extends AppCompatActivity {
                     response += "\n" + jsoResult.getJSONObject(i).getString("population");
                 }
             }
+            if (c3.isChecked()) {
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("model");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("starship_class");
+                }
+            }
+            if (c4.isChecked()) {
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("model");
+                }
+            }
+            if (c5.isChecked()) {
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("language");
+                }
+            }
+            if (c6.isChecked()) {
+                for (int i = 0; i < jsoResult.length(); i++) {
+                    response += "\n" + jsoResult.getJSONObject(i).getString("title");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("director");
+                    response += "\n" + jsoResult.getJSONObject(i).getString("release_date");
+                }
+            }
+
+
+
             return response;
 
         }
