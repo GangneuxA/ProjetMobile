@@ -14,11 +14,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 public class Quizz extends AppCompatActivity {
 
     DBHandler db;
     LinearLayout ll ;
+    public int num_rep;
+    int valide;
+    int nb_try;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,15 +33,38 @@ public class Quizz extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         db = new DBHandler(this);
         ll = (LinearLayout) findViewById(R.id.ll);
+        db.insertBasic();
+        num_rep = Question();
+        valide = 0;
+        nb_try = 0;
     }
 
+
+    public int Question(){
+        TextView t = (TextView) findViewById(R.id.Question);
+        List<QuestionReponse> result = db.QuestionDB();
+        Random random = new Random();
+        int i = (int) random.nextInt(result.size());
+        t.setText(result.get(i).getQuestion());
+        return i;
+    }
     public void add(View v){
+        nb_try++;
+        List<QuestionReponse> result = db.QuestionDB();
         EditText e = (EditText) findViewById(R.id.Reponse);
-        String res = e.getText().toString();
-        db.insertQ(res,"test");
-        db.close();
+        String rep = e.getText().toString();
+        TextView t = (TextView) findViewById(R.id.Question);
+        String dbR = result.get(num_rep).getReponse();
+        if(rep.toLowerCase(Locale.ROOT).equals(dbR.toLowerCase(Locale.ROOT))){
+            t.setBackgroundResource(R.color.green);
+            valide++;
+        }else{
+            t.setBackgroundResource(R.color.warm);
+        }
+        TextView s = (TextView) findViewById(R.id.Score);
+        s.setText("Score : "+valide+" / "+nb_try);
     }
-
+/*
     public void aff(View v) {
         List<String> responses = db.selectAll();
         for (String response : responses) {
@@ -45,6 +73,8 @@ public class Quizz extends AppCompatActivity {
             ll.addView(tv);
         }
     }
+
+ */
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();

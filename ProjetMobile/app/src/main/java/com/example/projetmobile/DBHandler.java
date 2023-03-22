@@ -33,7 +33,59 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertQ(String question, String reponse){
+    public void insertBasic(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        onUpgrade(db,1,2);
+        ContentValues values1 = new ContentValues();
+        ContentValues values2 = new ContentValues();
+        values1.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the first star wars movie ?");
+        values1.put(DBContract.Form.COLUMN_REPONSE,"The Phantom Menace");
+        values2.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the yellow droid?");
+        values2.put(DBContract.Form.COLUMN_REPONSE,"C3-PO");
+        db.insert(DBContract.Form.TABLE_NAME,null,values1);
+        db.insert(DBContract.Form.TABLE_NAME,null,values2);
+        db.close();
+    }
+
+    public List<QuestionReponse> QuestionDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        List<QuestionReponse> responses = new ArrayList<>();
+        String[] projection = {
+                DBContract.Form._ID,
+                DBContract.Form.COLUMN_QUESTION,
+                DBContract.Form.COLUMN_REPONSE
+        };
+
+        Cursor cursor = db.query(
+                DBContract.Form.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.Form._ID));
+            String question =  cursor.getString(cursor.getColumnIndexOrThrow(DBContract.Form.COLUMN_QUESTION));
+            String reponse =  cursor.getString(cursor.getColumnIndexOrThrow(DBContract.Form.COLUMN_REPONSE));
+            QuestionReponse result = new QuestionReponse(id,question,reponse);
+
+
+            responses.add(result);
+        }
+
+        cursor.close();
+        db.close();
+
+
+        return responses;
+
+
+    }
+
+   /* public void insertQ(String question, String reponse){
         SQLiteDatabase db = this.getWritableDatabase();
         // insertion create a row and insert it
         ContentValues values = new ContentValues();
@@ -42,7 +94,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(DBContract.Form.TABLE_NAME,null,values);
         db.close();
     }
-
+*/
     public List<String> selectAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> responses = new ArrayList<>();
