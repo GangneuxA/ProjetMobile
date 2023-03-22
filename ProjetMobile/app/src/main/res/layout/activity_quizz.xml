@@ -54,6 +54,13 @@
         android:layout_centerHorizontal="true"
         android:onClick="aff"/>
 
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:textAlignment="center"
+        android:layout_below="@+id/test"></LinearLayout>
     <TextView
         android:id="@+id/Score"
         android:layout_width="match_parent"

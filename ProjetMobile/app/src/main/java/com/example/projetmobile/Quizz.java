@@ -27,6 +27,7 @@ public class Quizz extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         db = new DBHandler(this);
+        ll = (LinearLayout) findViewById(R.id.ll);
     }
 
     public void add(View v){
