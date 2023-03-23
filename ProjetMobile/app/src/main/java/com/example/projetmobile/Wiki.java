@@ -131,13 +131,20 @@ public class Wiki extends AppCompatActivity {
                 connection = (HttpsURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 InputStream inputStream = connection.getInputStream();
+
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
                 String ligne = bufferedReader.readLine() ;
+
                 while (ligne!= null){
                     response+=ligne;
                     ligne = bufferedReader.readLine();
                 }
+
+                inputStream.close();
+                inputStreamReader.close();
+
             } catch (UnsupportedEncodingException e) {
                 response = "problème d'encodage";
             } catch (MalformedURLException e) {
@@ -147,6 +154,7 @@ public class Wiki extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             return response;
         }
 
@@ -166,7 +174,7 @@ public class Wiki extends AppCompatActivity {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
                     response += "\n" + jsoResult.getJSONObject(i).getString("gender");
                     response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
-                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld")) + "\n" ;
+                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld"))  ;
 
                 }
             }
@@ -221,33 +229,35 @@ public class Wiki extends AppCompatActivity {
             String response2="";
             try {
 
-                HttpsURLConnection connection2 = null;
-                URL url2 = new URL(URLEncoder.encode(test,"utf-8"));
-                connection2 = (HttpsURLConnection) url2.openConnection();
-                connection2.setRequestMethod("GET");
-                InputStream inputStream = connection2.getInputStream();
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader2 = new BufferedReader(inputStreamReader);
-                String ligne2 = bufferedReader2.readLine() ;
+                HttpsURLConnection connection = null;
+                URL url2 = new URL(test);
+
+                connection = (HttpsURLConnection) url2.openConnection();
+
+                InputStream inputStream2 = connection.getInputStream();
+
+                InputStreamReader inputStreamReader2 = new InputStreamReader(inputStream2);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader2);
+                String ligne2 = bufferedReader.readLine() ;
 
                 while (ligne2!= null){
                     response2+=ligne2;
-                    ligne2 = bufferedReader2.readLine();
+                    ligne2 = bufferedReader.readLine();
                 }
 
                 JSONObject jso = new JSONObject(response2);
-                JSONArray jsoResult2=jso.getJSONArray("results");
-                for (int i = 0; i < jsoResult2.length(); i++) {
-                    retour += jsoResult2.getJSONObject(i).getString("name");
+                for (int i = 0; i < jso.length(); i++) {
+                    retour += jso.getString("name");
                 }
 
             } catch (UnsupportedEncodingException e) {
-                response2 = "problème d'encodage";
+                retour = "problème d'encodage";
             } catch (MalformedURLException e) {
-                response2 = "problème d'URL ";
+                retour = "problème d'URL ";
             } catch (IOException e) {
-                response2 = "problème de connexion ";
+                retour = "problème de connexion ";
             } catch (Exception e) {
+                retour="erreur";
                 e.printStackTrace();
             }
 
