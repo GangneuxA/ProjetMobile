@@ -48,7 +48,7 @@ public class Quizz extends AppCompatActivity {
         t.setText(result.get(i).getQuestion());
         return i;
     }
-    public void add(View v){
+    public void add(View v) throws InterruptedException {
         nb_try++;
         List<QuestionReponse> result = db.QuestionDB();
         EditText e = (EditText) findViewById(R.id.Reponse);
@@ -58,8 +58,13 @@ public class Quizz extends AppCompatActivity {
         if(rep.toLowerCase(Locale.ROOT).equals(dbR.toLowerCase(Locale.ROOT))){
             t.setBackgroundResource(R.color.green);
             valide++;
+            e.setText("");
+            num_rep = Question();
         }else{
             t.setBackgroundResource(R.color.warm);
+            TextView TextviewRep = new TextView(this);
+            TextviewRep.setText("the good answer is : "+dbR);
+            ll.addView(TextviewRep);
         }
         TextView s = (TextView) findViewById(R.id.Score);
         s.setText("Score : "+valide+" / "+nb_try);

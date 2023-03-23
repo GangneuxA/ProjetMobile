@@ -38,12 +38,24 @@ public class DBHandler extends SQLiteOpenHelper {
         onUpgrade(db,1,2);
         ContentValues values1 = new ContentValues();
         ContentValues values2 = new ContentValues();
+        ContentValues values3 = new ContentValues();
+        ContentValues values4 = new ContentValues();
+        ContentValues values5 = new ContentValues();
         values1.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the first star wars movie ?");
         values1.put(DBContract.Form.COLUMN_REPONSE,"The Phantom Menace");
         values2.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the yellow droid?");
         values2.put(DBContract.Form.COLUMN_REPONSE,"C3-PO");
+        values3.put(DBContract.Form.COLUMN_QUESTION,"Who is Leia Organa's brother?");
+        values3.put(DBContract.Form.COLUMN_REPONSE,"Luke Skywalker");
+        values4.put(DBContract.Form.COLUMN_QUESTION,"What is the name of Han Solo's best friend?");
+        values4.put(DBContract.Form.COLUMN_REPONSE,"chewbacca");
+        values5.put(DBContract.Form.COLUMN_QUESTION,"Who fight anakin on Mustafar?");
+        values5.put(DBContract.Form.COLUMN_REPONSE,"Obi-Wan Kenobi");
         db.insert(DBContract.Form.TABLE_NAME,null,values1);
         db.insert(DBContract.Form.TABLE_NAME,null,values2);
+        db.insert(DBContract.Form.TABLE_NAME,null,values3);
+        db.insert(DBContract.Form.TABLE_NAME,null,values4);
+        db.insert(DBContract.Form.TABLE_NAME,null,values5);
         db.close();
     }
 
