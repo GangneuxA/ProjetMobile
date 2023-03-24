@@ -180,46 +180,208 @@ public class Wiki extends AppCompatActivity {
 
             if (c1.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
-                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("gender");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
-                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld"),1)  ;
-                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
-                    for (int j=0; j< jsoFilms.length();j++){
-                        response += "\n" + reqI(jsoFilms.getString(j),2);
+                    response += "\nName: " + jsoResult.getJSONObject(i).getString("name");
+                    response += "\nGender: " + jsoResult.getJSONObject(i).getString("gender");
+
+                    JSONArray jsoSpe=jsoResult.getJSONObject(i).getJSONArray("species");
+                    for (int j=0; j< jsoSpe.length();j++){
+                        if(!jsoSpe.isNull(j)){
+                            response += "\nSpecies: "+reqI(jsoSpe.getString(j),1);
+                        }
                     }
+                    response += "\nHeight: " + jsoResult.getJSONObject(i).getString("height")+"    Mass: "+ jsoResult.getJSONObject(i).getString("mass");
+                    response += "\nBirth year: " + jsoResult.getJSONObject(i).getString("birth_year");
+                    response += "\nHomeworld: " + reqI(jsoResult.getJSONObject(i).getString("homeworld"),1)  ;
+
+                    JSONArray jsoVeh=jsoResult.getJSONObject(i).getJSONArray("vehicles");
+                    response+="\n\nVehicles: ";
+                    if(!jsoVeh.isNull(0)) {
+                        for (int j = 0; j < jsoVeh.length(); j++) {
+
+                            response += "\n    -" + reqI(jsoVeh.getString(j), 1);
+                        }
+                    }else{
+                            response+="\nThis character doesn't have his own vehicle";
+                    }
+
+                    JSONArray jsoSta=jsoResult.getJSONObject(i).getJSONArray("starships");
+                    response+="\n\nStarships: ";
+                    if(!jsoSta.isNull(0)){
+                        for (int j=0; j< jsoSta.length();j++) {
+                            response += "\n    -" + reqI(jsoSta.getString(j), 1);
+                        }
+                    }else{
+                       response+= "\nThis character doesn't have his own starship";
+                    }
+
+                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
+                    response+= "\n\nAppearances: ";
+                    for (int j=0; j< jsoFilms.length();j++){
+                        response += "\n    -" + reqI(jsoFilms.getString(j),2);
+                    }
+                    response+="\n";
                 }
             }
             if (c2.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
-                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("population") + "\n";
+                    response += "\nName: " + jsoResult.getJSONObject(i).getString("name");
+                    response += "\nPopulation: " + jsoResult.getJSONObject(i).getString("population") + " peoples";
+                    response += "\nClimate: " + jsoResult.getJSONObject(i).getString("climate");
+                    response += "\nTerrain: " + jsoResult.getJSONObject(i).getString("terrain");
+                    response += "\nDiameter: "+jsoResult.getJSONObject(i).getString("diameter");
+                    response += "\nRotation period: "+jsoResult.getJSONObject(i).getString("rotation_period");
+                    response += "\nOrbital period: "+jsoResult.getJSONObject(i).getString("orbital_period");
+                    response += "\nGravity: "+jsoResult.getJSONObject(i).getString("gravity");
+
+                    JSONArray jsoRes=jsoResult.getJSONObject(i).getJSONArray("residents");
+                    response+="\n\nResidents: ";
+                    if(!jsoRes.isNull(0)){
+                        for (int j=0; j< jsoRes.length();j++) {
+                            response += "\n    -" + reqI(jsoRes.getString(j), 1);
+                        }
+                    }else{
+                        response+= "\nThis planet doesn't have any residents";
+                    }
+
+                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
+                    response+= "\n\nAppearances: ";
+                    for (int j=0; j< jsoFilms.length();j++){
+                        response += "\n    -" + reqI(jsoFilms.getString(j),2);
+                    }
+                    response+="\n";
                 }
             }
             if (c3.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
-                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("model");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("starship_class") + "\n";
+                    response += "\nName: " + jsoResult.getJSONObject(i).getString("name");
+                    response += "\nModel: " + jsoResult.getJSONObject(i).getString("model");
+                    response += "\nManufacturer: " + jsoResult.getJSONObject(i).getString("manufacturer") ;
+                    response += "\nCost: " + jsoResult.getJSONObject(i).getString("cost_in_credits")+" credits";
+                    response += "\nLength: " + jsoResult.getJSONObject(i).getString("length");
+                    response += "\nCrew: " + jsoResult.getJSONObject(i).getString("crew");
+                    response += "\nPassengers: " + jsoResult.getJSONObject(i).getString("passengers");
+                    response += "\nCargo capacity" + jsoResult.getJSONObject(i).getString("cargo_capacity");
+                    response += "\nConsumables: " + jsoResult.getJSONObject(i).getString("consumables");
+
+                    JSONArray jsoPil=jsoResult.getJSONObject(i).getJSONArray("pilots");
+                    response+="\n\npilots: ";
+                    if(!jsoPil.isNull(0)){
+                        for (int j=0; j< jsoPil.length();j++) {
+                            response += "\n    -" + reqI(jsoPil.getString(j), 1);
+                        }
+                    }else{
+                        response+= "\nThis planet doesn't have any pilots";
+                    }
+
+                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
+                    response+= "\n\nAppearances: ";
+                    for (int j=0; j< jsoFilms.length();j++){
+                        response += "\n    -" + reqI(jsoFilms.getString(j),2);
+                    }
+                    response+="\n";
                 }
             }
             if (c4.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
-                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("model") + "\n";
+                    response += "\nName: " + jsoResult.getJSONObject(i).getString("name");
+                    response += "\nModel: " + jsoResult.getJSONObject(i).getString("model");
+                    response += "\nManufacturer: " + jsoResult.getJSONObject(i).getString("manufacturer") ;
+                    response += "\nCost: " + jsoResult.getJSONObject(i).getString("cost_in_credits")+" credits";
+                    response += "\nLength: " + jsoResult.getJSONObject(i).getString("length");
+                    response += "\nCrew: " + jsoResult.getJSONObject(i).getString("crew");
+                    response += "\nPassengers: " + jsoResult.getJSONObject(i).getString("passengers");
+                    response += "\nCargo capacity" + jsoResult.getJSONObject(i).getString("cargo_capacity");
+                    response += "\nConsumables: " + jsoResult.getJSONObject(i).getString("consumables");
+
+                    JSONArray jsoPil=jsoResult.getJSONObject(i).getJSONArray("pilots");
+                    response+="\n\npilots: ";
+                    if(!jsoPil.isNull(0)){
+                        for (int j=0; j< jsoPil.length();j++) {
+                            response += "\n    -" + reqI(jsoPil.getString(j), 1);
+                        }
+                    }else{
+                        response+= "\nThis planet doesn't have any pilots";
+                    }
+
+                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
+                    response+= "\n\nAppearances: ";
+                    for (int j=0; j< jsoFilms.length();j++){
+                        response += "\n    -" + reqI(jsoFilms.getString(j),2);
+                    }
+                    response+="\n";
                 }
             }
             if (c5.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
-                    response += "\n" + jsoResult.getJSONObject(i).getString("name");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("language") + "\n";
+                    response += "\nName: " + jsoResult.getJSONObject(i).getString("name");
+                    response += "\nHomeworld: " + reqI(jsoResult.getJSONObject(i).getString("homeworld"),1);
+                    response += "\nLanguage: " + jsoResult.getJSONObject(i).getString("language");
+
+                    response += "\nClassification: " + jsoResult.getJSONObject(i).getString("classification");
+                    response += "\nDesignation: " + jsoResult.getJSONObject(i).getString("designation");
+                    response += "\nAverage lifespan: " + jsoResult.getJSONObject(i).getString("average_lifespan");
+
+                    response += "\nAverage height: " + jsoResult.getJSONObject(i).getString("average_height");
+                    response += "\nSkin Colors: " + jsoResult.getJSONObject(i).getString("skin_colors");
+                    response += "\nHair colors: " + jsoResult.getJSONObject(i).getString("hair_colors");
+                    response += "\nEyes colors: " + jsoResult.getJSONObject(i).getString("eye_colors");
+
+                    JSONArray jsoPeo=jsoResult.getJSONObject(i).getJSONArray("people");
+                    response+="\n\nPeoples: ";
+                    if(!jsoPeo.isNull(0)){
+                        for (int j=0; j< jsoPeo.length();j++) {
+                            response += "\n    -" + reqI(jsoPeo.getString(j), 1);
+                        }
+                    }else{
+                        response+= "\nThis species doesn't have any famous people";
+                    }
+
+                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
+                    response+= "\n\nAppearances: ";
+                    for (int j=0; j< jsoFilms.length();j++){
+                        response += "\n    -" + reqI(jsoFilms.getString(j),2);
+                    }
+                    response+="\n";
                 }
             }
             if (c6.isChecked()) {
                 for (int i = 0; i < jsoResult.length(); i++) {
-                    response += "\n" + jsoResult.getJSONObject(i).getString("title");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("director");
-                    response += "\n" + jsoResult.getJSONObject(i).getString("release_date") + "\n";
+                    response += "\nTitle: " + jsoResult.getJSONObject(i).getString("title");
+                    response += "\nRelease date: " + jsoResult.getJSONObject(i).getString("release_date");
+                    response += "\nDirector: " + jsoResult.getJSONObject(i).getString("director");
+                    response += "\nProducer: " + jsoResult.getJSONObject(i).getString("producer");
+
+                    JSONArray jsoCha=jsoResult.getJSONObject(i).getJSONArray("characters");
+                    response+="\n\nCharacters: ";
+                    for (int j=0; j< jsoCha.length();j++) {
+                        response += "\n    -" + reqI(jsoCha.getString(j), 1);
+                    }
+                    JSONArray jsoPla=jsoResult.getJSONObject(i).getJSONArray("planets");
+                    response+="\n\nPlanets: ";
+                    for (int j=0; j< jsoPla.length();j++) {
+                        response += "\n    -" + reqI(jsoPla.getString(j), 1);
+                    }
+                    JSONArray jsoSta=jsoResult.getJSONObject(i).getJSONArray("starships");
+                    response+="\n\nStarships: ";
+                    for (int j=0; j< jsoSta.length();j++) {
+                        response += "\n    -" + reqI(jsoSta.getString(j), 1);
+                    }
+                    JSONArray jsoVeh=jsoResult.getJSONObject(i).getJSONArray("vehicles");
+                    response+="\n\nVehicles: ";
+                    if(!jsoVeh.isNull(0)) {
+                        for (int j = 0; j < jsoVeh.length(); j++) {
+
+                            response += "\n    -" + reqI(jsoVeh.getString(j), 1);
+                        }
+                    }else{
+                        response+="\n";
+                    }
+                    JSONArray jsoSpe=jsoResult.getJSONObject(i).getJSONArray("species");
+                    response+="\n\nSpecies: ";
+                    for (int j=0; j< jsoSpe.length();j++) {
+                        response += "\n    -" + reqI(jsoSpe.getString(j), 1);
+                    }
+                    response+="\n";
                 }
             }
             return response;
@@ -261,10 +423,11 @@ public class Wiki extends AppCompatActivity {
                 JSONObject jso = new JSONObject(response2);
 
                 if (id==1){
-                    retour += jso.getString("name");
+                    retour = jso.getString("name");
                 }if(id==2){
                     retour = jso.getString("title");
                 }
+
 
             } catch (UnsupportedEncodingException e) {
                 retour = "problème d'encodage";
