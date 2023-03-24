@@ -90,7 +90,15 @@ public class Wiki extends AppCompatActivity {
         String retour="";
         protected String doInBackground(String... req) {
             String response = requete(req[0]);
-            return response;
+            try {
+                JSONObject toDecode = new JSONObject(response);
+                String enfin = decodeJSON(toDecode);
+                return enfin;
+            } catch (JSONException ex) {
+                throw new RuntimeException(ex);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
         private String requete(String req) {
             c1 = (RadioButton) findViewById(R.id.Rpeople);
@@ -142,6 +150,7 @@ public class Wiki extends AppCompatActivity {
                     ligne = bufferedReader.readLine();
                 }
 
+                connection.disconnect();
                 inputStream.close();
                 inputStreamReader.close();
 
@@ -174,8 +183,11 @@ public class Wiki extends AppCompatActivity {
                     response += "\n" + jsoResult.getJSONObject(i).getString("name");
                     response += "\n" + jsoResult.getJSONObject(i).getString("gender");
                     response += "\n" + jsoResult.getJSONObject(i).getString("birth_year");
-                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld"))  ;
-
+                    response += "\n" + reqI(jsoResult.getJSONObject(i).getString("homeworld"),1)  ;
+                    JSONArray jsoFilms=jsoResult.getJSONObject(i).getJSONArray("films");
+                    for (int j=0; j< jsoFilms.length();j++){
+                        response += "\n" + reqI(jsoFilms.getString(j),2);
+                    }
                 }
             }
             if (c2.isChecked()) {
@@ -218,14 +230,14 @@ public class Wiki extends AppCompatActivity {
         protected void onPostExecute(String result) {
             JSONObject toDecode = null;
             try {
-                toDecode = new JSONObject(result);
-                tResultat.setText(decodeJSON(toDecode));
+               // toDecode = new JSONObject(result);
+                tResultat.setText(result);
             } catch (Exception e) {
                 tResultat.setText("error parsing JSON");
             }
 
         }
-        protected String reqI(String test) throws MalformedURLException, JSONException {
+        protected String reqI(String test, int id) throws MalformedURLException, JSONException {
             String response2="";
             try {
 
@@ -245,9 +257,13 @@ public class Wiki extends AppCompatActivity {
                     ligne2 = bufferedReader.readLine();
                 }
 
+
                 JSONObject jso = new JSONObject(response2);
-                for (int i = 0; i < jso.length(); i++) {
+
+                if (id==1){
                     retour += jso.getString("name");
+                }if(id==2){
+                    retour = jso.getString("title");
                 }
 
             } catch (UnsupportedEncodingException e) {
@@ -263,6 +279,7 @@ public class Wiki extends AppCompatActivity {
 
             return retour;
         }
+
 
     }
 }
