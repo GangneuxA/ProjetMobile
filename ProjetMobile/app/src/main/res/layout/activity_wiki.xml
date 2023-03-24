@@ -60,15 +60,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:textColor="#FFFF00"
-            >
+            android:textColor="#FFFF00">
 
             <RadioButton
                 android:id="@+id/Rpeople"
@@ -112,13 +110,28 @@
 
             <RadioButton
                 android:id="@+id/Rfilms"
-                android:layout_width="wrap_content"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:text="films"
                 android:textColor="#FFFF00"
                 android:textSize="10dp" />
         </RadioGroup>
 
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/black"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/Bwookie"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:onClick="Wookie"
+            android:text="Wookie Language"
+            android:visibility="visible" />
 
     </LinearLayout>
 
@@ -137,6 +150,7 @@
             android:padding="5dp"
             android:textColor="#FFFFFF"
             android:textSize="20dp" />
-
     </ScrollView>
+
+
 </LinearLayout>
