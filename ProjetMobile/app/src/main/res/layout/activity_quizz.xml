@@ -44,12 +44,12 @@
         android:layout_centerHorizontal="true"
         android:onClick="add"/>
     <Button
-        android:id="@+id/test"
+        android:id="@+id/Suivante"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20dp"
-        android:text="afficher"
+        android:text="next"
         android:layout_below="@+id/valider"
         android:layout_centerHorizontal="true"
         android:onClick="aff"/>
