@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class Lamp extends AppCompatActivity {
@@ -62,16 +64,36 @@ public class Lamp extends AppCompatActivity {
         return true; }
 
     public void flash(View v) throws CameraAccessException {
+        RadioButton c2 = (RadioButton) findViewById(R.id.RGreen);
+        RadioButton c3 = (RadioButton) findViewById(R.id.RPurple);
+        RadioButton c4 = (RadioButton) findViewById(R.id.RRed);
+
+
         if(hasCameraFlash){
             if(flashON){
                 flashON = false;
-                saber.setImageResource(R.drawable.sabre_f);
+                saber.setImageResource(R.drawable.sabre_eteint);
                 flashLightOff();
             }
             else{
                 flashON = true;
-                saber.setImageResource(R.drawable.sabre_o);
-                flashLightOn();
+                if(c2.isChecked()){
+                    saber.setImageResource(R.drawable.sabre_vert);
+                    flashLightOn();
+                }else {
+                    if (c3.isChecked()) {
+                        saber.setImageResource(R.drawable.sabre_violet);
+                        flashLightOn();
+                    }else{
+                        if(c4.isChecked()){
+                            saber.setImageResource(R.drawable.sabre_rouge);
+                            flashLightOn();
+                        }else {
+                            saber.setImageResource(R.drawable.sabre_bleu);
+                            flashLightOn();
+                        }
+                    }
+                }
             }
         }
     }

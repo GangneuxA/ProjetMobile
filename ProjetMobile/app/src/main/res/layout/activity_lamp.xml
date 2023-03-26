@@ -18,13 +18,54 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         />
 
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:id="@+id/Rcolor">
+
+        <RadioButton
+            android:id="@+id/RBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blue"
+            android:textColor="@color/white"
+             />
+
+        <RadioButton
+            android:id="@+id/RGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Green"
+            android:textColor="@color/white"/>
+
+        <RadioButton
+            android:id="@+id/RPurple"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Purple"
+            android:textColor="@color/white"/>
+
+        <RadioButton
+            android:id="@+id/RRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Red"
+            android:textColor="@color/white"/>
+
+    </RadioGroup>
+
     <ImageButton
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:src="@drawable/sabre_f"
+        android:src="@drawable/sabre_eteint"
         android:backgroundTint="@color/black"
-        android:onClick="flash"/>
+        android:onClick="flash"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        />
 
 </LinearLayout>
