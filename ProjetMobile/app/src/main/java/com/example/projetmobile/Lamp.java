@@ -64,10 +64,10 @@ public class Lamp extends AppCompatActivity {
         return true; }
 
     public void flash(View v) throws CameraAccessException {
+        RadioButton c1 = (RadioButton) findViewById(R.id.RBlue);
         RadioButton c2 = (RadioButton) findViewById(R.id.RGreen);
         RadioButton c3 = (RadioButton) findViewById(R.id.RPurple);
         RadioButton c4 = (RadioButton) findViewById(R.id.RRed);
-
 
         if(hasCameraFlash){
             if(flashON){
@@ -77,23 +77,23 @@ public class Lamp extends AppCompatActivity {
             }
             else{
                 flashON = true;
+                if(c1.isChecked()){
+                    saber.setImageResource(R.drawable.sabre_bleu);
+                    flashLightOn();
+                }
                 if(c2.isChecked()){
                     saber.setImageResource(R.drawable.sabre_vert);
                     flashLightOn();
-                }else {
-                    if (c3.isChecked()) {
-                        saber.setImageResource(R.drawable.sabre_violet);
-                        flashLightOn();
-                    }else{
-                        if(c4.isChecked()){
-                            saber.setImageResource(R.drawable.sabre_rouge);
-                            flashLightOn();
-                        }else {
-                            saber.setImageResource(R.drawable.sabre_bleu);
-                            flashLightOn();
-                        }
-                    }
                 }
+                if (c3.isChecked()) {
+                    saber.setImageResource(R.drawable.sabre_violet);
+                    flashLightOn();
+                }
+                if(c4.isChecked()){
+                    saber.setImageResource(R.drawable.sabre_rouge);
+                    flashLightOn();
+                }
+
             }
         }
     }
