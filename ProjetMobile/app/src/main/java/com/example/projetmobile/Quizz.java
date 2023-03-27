@@ -50,7 +50,10 @@ public class Quizz extends AppCompatActivity {
         int i = (int) random.nextInt(result.size());
         t.setText(result.get(i).getQuestion());
         t.setBackgroundResource(R.color.purple_200);
+        Button next = (Button) findViewById(R.id.Suivante);
+        next.setVisibility(View.INVISIBLE);
         return i;
+
     }
     public void add(View v) throws InterruptedException {
         nb_try++;
@@ -67,6 +70,8 @@ public class Quizz extends AppCompatActivity {
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             Button b = (Button) findViewById(R.id.valider);
             b.setVisibility(View.INVISIBLE);
+            Button next = (Button) findViewById(R.id.Suivante);
+            next.setVisibility(View.VISIBLE);
         }else{
             t.setBackgroundResource(R.color.warm);
             TextView TextviewRep = new TextView(this);
