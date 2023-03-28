@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setIcon(R.drawable.logo);
         Res=(TextView) findViewById(R.id.res);
         rdm=(int)(Math.random()*6)+1;
         MainActivity.RequestTask r= new RequestTask();
@@ -61,14 +63,17 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.wiki:
                 Intent i = new Intent(MainActivity.this, Wiki.class);
+                finishAffinity();
                 startActivity(i);
                 return (true);
             case R.id.quizz:
                 Intent i2 = new Intent(MainActivity.this, Quizz.class);
+                finishAffinity();
                 startActivity(i2);
                 return (true);
             case R.id.lamp:
                 Intent i3 = new Intent(MainActivity.this, Lamp.class);
+                finishAffinity();
                 startActivity(i3);
                 return (true);
             case R.id.exit:

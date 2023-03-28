@@ -101,16 +101,23 @@ public class Quizz extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
-            case R.id.wiki:
-                Intent i = new Intent(Quizz.this, Wiki.class);
-                startActivity(i);
-                return (true);
-            case R.id.quizz:
-                Intent i2 = new Intent(Quizz.this, Quizz.class);
+            case R.id.home:
+                Intent i2 = new Intent(Quizz.this, MainActivity.class);
+                finishAffinity();
                 startActivity(i2);
                 return (true);
+            case R.id.wiki:
+                Intent i = new Intent(Quizz.this, Wiki.class);
+                finishAffinity();
+                startActivity(i);
+                return (true);
+            /*case R.id.quizz:
+                Intent i2 = new Intent(Quizz.this, Quizz.class);
+                startActivity(i2);
+                return (true);*/
             case R.id.lamp:
                 Intent i3 = new Intent(Quizz.this, Lamp.class);
+                finishAffinity();
                 startActivity(i3);
                 return (true);
             case R.id.exit:

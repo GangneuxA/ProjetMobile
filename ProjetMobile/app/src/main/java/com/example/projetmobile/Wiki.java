@@ -61,16 +61,23 @@ public class Wiki extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
-            case R.id.wiki:
-                Intent i = new Intent(Wiki.this, Wiki.class);
+            case R.id.home:
+                Intent i = new Intent(Wiki.this, MainActivity.class);
+                finishAffinity();
                 startActivity(i);
                 return (true);
+            /*case R.id.wiki:
+                Intent i = new Intent(Wiki.this, Wiki.class);
+                startActivity(i);
+                return (true);*/
             case R.id.quizz:
                 Intent i2 = new Intent(Wiki.this, Quizz.class);
+                finishAffinity();
                 startActivity(i2);
                 return (true);
             case R.id.lamp:
                 Intent i3 = new Intent(Wiki.this, Lamp.class);
+                finishAffinity();
                 startActivity(i3);
                 return (true);
             case R.id.exit:

@@ -32,9 +32,9 @@ public class Lamp extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         saber = (ImageButton) findViewById(R.id.img);
         hasCameraFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -46,18 +46,25 @@ public class Lamp extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
+            case R.id.home:
+                Intent i3 = new Intent(Lamp.this, MainActivity.class);
+                finishAffinity();
+                startActivity(i3);
+                return (true);
             case R.id.wiki:
                 Intent i = new Intent(Lamp.this, Wiki.class);
+                finishAffinity();
                 startActivity(i);
                 return (true);
             case R.id.quizz:
                 Intent i2 = new Intent(Lamp.this, Quizz.class);
+                finishAffinity();
                 startActivity(i2);
                 return (true);
-            case R.id.lamp:
+            /*case R.id.lamp:
                 Intent i3 = new Intent(Lamp.this, Lamp.class);
                 startActivity(i3);
-                return (true);
+                return (true);*/
             case R.id.exit:
                 finish();
                 return (true); }
