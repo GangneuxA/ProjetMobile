@@ -27,13 +27,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tResultat;
-    Button btn;
-    EditText e;
-    RadioButton c1,c2, c3, c4, c5, c6;
+    TextView Res;
+    int rdm;
+    String requete;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Res=(TextView) findViewById(R.id.res);
+        rdm=(int)(Math.random()*6)+1;
+        MainActivity.RequestTask r= new RequestTask();
+        requete=""+rdm;
+        r.execute(requete);
     }
 
     @Override
@@ -71,4 +76,55 @@ public class MainActivity extends AppCompatActivity {
                 return (true); }
         return true; }
 
+    private class RequestTask extends AsyncTask<String, Void, String> {
+        // Le corps de la tâche asynchrone (exécuté en tâche de fond)
+//  lance la requète
+        protected String doInBackground(String... req) {
+            String response = requete(req[0]);
+            return response;
+        }
+        private String requete(String req) {
+            String response = "";
+            try {
+                HttpURLConnection connection = null;
+                URL url = new URL("https://swapi.dev/api/films/"+URLEncoder.encode(req,"utf-8")+"/");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                InputStream inputStream = connection.getInputStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String ligne = bufferedReader.readLine() ;
+                while (ligne!= null){
+                    response+=ligne;
+                    ligne = bufferedReader.readLine();
+                }
+            } catch (UnsupportedEncodingException e) {
+                response = "problème d'encodage";
+            } catch (MalformedURLException e) {
+                response = "problème d'URL ";
+            } catch (IOException e) {
+                response = "problème de connexion ";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        private String decodeJSON(JSONObject jso) throws Exception {
+            String response = "";
+            response = jso.getString("opening_crawl");
+            return response;
+        }
+        // Méthode appelée lorsque la tâche de fond sera terminée
+        //  Affiche le résultat
+        protected void onPostExecute(String result) {
+            JSONObject toDecode = null;
+            try {
+                toDecode = new JSONObject(result);
+                Res.setText(decodeJSON(toDecode));
+            } catch (Exception e) {
+                Res.setText("error parsing JSON");
+            }
+        }
+    }
 }
