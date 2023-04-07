@@ -90,16 +90,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-   /* public void insertQ(String question, String reponse){
-        SQLiteDatabase db = this.getWritableDatabase();
-        // insertion create a row and insert it
-        ContentValues values = new ContentValues();
-        values.put(DBContract.Form.COLUMN_QUESTION, question);
-        values.put(DBContract.Form.COLUMN_REPONSE, reponse);
-        db.insert(DBContract.Form.TABLE_NAME,null,values);
-        db.close();
-    }
-*/
     public List<String> selectAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> responses = new ArrayList<>();

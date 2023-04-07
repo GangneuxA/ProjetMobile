@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -27,6 +28,8 @@ public class Quizz extends AppCompatActivity {
     public int num_rep;
     int valide;
     int nb_try;
+    ArrayList<Integer> q = new ArrayList<Integer>();
+    Button r ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,19 +38,31 @@ public class Quizz extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         db = new DBHandler(this);
-        ll = (LinearLayout) findViewById(R.id.ll);
         db.insertBasic();
         num_rep = Question();
         valide = 0;
         nb_try = 0;
+        r = (Button) findViewById(R.id.rejouer);
+        r.setVisibility(View.INVISIBLE);
     }
 
 
     public int Question(){
+        boolean b = false;
         TextView t = (TextView) findViewById(R.id.Question);
         List<QuestionReponse> result = db.QuestionDB();
         Random random = new Random();
         int i = (int) random.nextInt(result.size());
+        if(!q.isEmpty()){
+            while(!b){
+                if(!q.contains(i)){
+                    b = true;
+                }else{
+                    i = (int) random.nextInt(result.size());
+                }
+            }
+        }
+        q.add(i);
         t.setText(result.get(i).getQuestion());
         t.setBackgroundResource(R.color.purple_200);
         Button next = (Button) findViewById(R.id.Suivante);
@@ -55,7 +70,7 @@ public class Quizz extends AppCompatActivity {
         return i;
 
     }
-    public void add(View v) throws InterruptedException {
+    public void valide(View v) throws InterruptedException {
         nb_try++;
         List<QuestionReponse> result = db.QuestionDB();
         EditText e = (EditText) findViewById(R.id.Reponse);
@@ -74,22 +89,35 @@ public class Quizz extends AppCompatActivity {
             next.setVisibility(View.VISIBLE);
         }else{
             t.setBackgroundResource(R.color.warm);
-            TextView TextviewRep = new TextView(this);
-            TextviewRep.setText("the good answer is : "+dbR);
-            ll.addView(TextviewRep);
+            Button next = (Button) findViewById(R.id.Suivante);
+            next.setVisibility(View.VISIBLE);
+            e.setText("");
         }
         TextView s = (TextView) findViewById(R.id.Score);
         s.setText("Score : "+valide+" / "+nb_try);
     }
 
     public void aff(View v) {
-
-        num_rep = Question();
+        TextView t = (TextView) findViewById(R.id.Question);
         Button b = (Button) findViewById(R.id.valider);
-        b.setVisibility(View.VISIBLE);
+        Button next = (Button) findViewById(R.id.Suivante);
+        if(q.size()!=10){
+            num_rep = Question();
+            b.setVisibility(View.VISIBLE);
+        }else{
+            r.setVisibility(View.VISIBLE);
+            t.setBackgroundResource(R.color.green);
+            t.setText("Quizz is finish, good job and try again for a better score !");
+            b.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        }
     }
 
-
+    public void rejouer(View v){
+        Intent i = new Intent(Quizz.this, Quizz.class);
+        finishAffinity();
+        startActivity(i);
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
