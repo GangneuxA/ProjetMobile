@@ -36,46 +36,19 @@ public class DBHandler extends SQLiteOpenHelper {
     public void insertBasic(){
         SQLiteDatabase db = this.getWritableDatabase();
         onUpgrade(db,1,2);
-        ContentValues values1 = new ContentValues();
-        ContentValues values2 = new ContentValues();
-        ContentValues values3 = new ContentValues();
-        ContentValues values4 = new ContentValues();
-        ContentValues values5 = new ContentValues();
-        ContentValues values6 = new ContentValues();
-        ContentValues values7 = new ContentValues();
-        ContentValues values8 = new ContentValues();
-        ContentValues values9 = new ContentValues();
-        ContentValues values10 = new ContentValues();
-        values1.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the first star wars movie ?");
-        values1.put(DBContract.Form.COLUMN_REPONSE,"A New Hope");
-        values2.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the yellow droid?");
-        values2.put(DBContract.Form.COLUMN_REPONSE,"C3-PO");
-        values3.put(DBContract.Form.COLUMN_QUESTION,"Who is Leia Organa's brother?");
-        values3.put(DBContract.Form.COLUMN_REPONSE,"Luke Skywalker");
-        values4.put(DBContract.Form.COLUMN_QUESTION,"What is the name of Han Solo's best friend?");
-        values4.put(DBContract.Form.COLUMN_REPONSE,"chewbacca");
-        values5.put(DBContract.Form.COLUMN_QUESTION,"What is the name of the creator of Star Wars");
-        values5.put(DBContract.Form.COLUMN_REPONSE,"George Lucas");
-        values6.put(DBContract.Form.COLUMN_QUESTION,"Who fight anakin on Mustafar?");
-        values6.put(DBContract.Form.COLUMN_REPONSE,"Obi-Wan Kenobi");
-        values7.put(DBContract.Form.COLUMN_QUESTION,"When was the first Star Wars movie released?");
-        values7.put(DBContract.Form.COLUMN_REPONSE,"1977");
-        values8.put(DBContract.Form.COLUMN_QUESTION,"What is the name of Han Solo's starship?");
-        values8.put(DBContract.Form.COLUMN_REPONSE,"Millenium Falcon");
-        values9.put(DBContract.Form.COLUMN_QUESTION,"Who is the creator of C3-PO?");
-        values9.put(DBContract.Form.COLUMN_REPONSE,"Anakin Skywalker");
-        values10.put(DBContract.Form.COLUMN_QUESTION,"What planet was Anakin born on?");
-        values10.put(DBContract.Form.COLUMN_REPONSE,"Tatooine");
-        db.insert(DBContract.Form.TABLE_NAME,null,values1);
-        db.insert(DBContract.Form.TABLE_NAME,null,values2);
-        db.insert(DBContract.Form.TABLE_NAME,null,values3);
-        db.insert(DBContract.Form.TABLE_NAME,null,values4);
-        db.insert(DBContract.Form.TABLE_NAME,null,values5);
-        db.insert(DBContract.Form.TABLE_NAME,null,values6);
-        db.insert(DBContract.Form.TABLE_NAME,null,values7);
-        db.insert(DBContract.Form.TABLE_NAME,null,values8);
-        db.insert(DBContract.Form.TABLE_NAME,null,values9);
-        db.insert(DBContract.Form.TABLE_NAME,null,values10);
+
+        String[] Questions={"What is the name of the first star wars movie ?", "What is the name of the yellow droid?","Who is Leia Organa's brother?",
+                "What is the name of Han Solo's best friend?","What is the name of the creator of Star Wars","Who fight anakin on Mustafar?",
+                "When was the first Star Wars movie released?","What is the name of Han Solo's starship?","Who is the creator of C3-PO?","What planet was Anakin born on?"};
+
+        String[] Reponses={"A New Hope","C3-PO","Luke Skywalker","chewbacca","George Lucas","Obi-Wan Kenobi","1977","Millenium Falcon", "Anakin Skywalker","Tatooine"};
+
+        for(int temp=0; temp<Questions.length;temp++){
+            ContentValues values = new ContentValues();
+            values.put(DBContract.Form.COLUMN_QUESTION,Questions[temp]);
+            values.put(DBContract.Form.COLUMN_REPONSE,Reponses[temp]);
+            db.insert(DBContract.Form.TABLE_NAME,null,values);
+        }
         db.close();
     }
 
