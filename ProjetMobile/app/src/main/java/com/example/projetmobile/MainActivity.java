@@ -1,6 +1,10 @@
 package com.example.projetmobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,10 +48,24 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.logo);
         Res=(TextView) findViewById(R.id.res);
-        rdm=(int)(Math.random()*6)+1;
-        MainActivity.RequestTask r= new RequestTask();
-        requete=""+rdm;
-        r.execute(requete);
+
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        Boolean isConnected=false;
+        for (Network network : connMgr.getAllNetworks()) {
+            NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
+            if (networkInfo.isConnected()){
+                isConnected=true;
+            }
+        }
+        if(isConnected){
+            rdm=(int)(Math.random()*6)+1;
+            MainActivity.RequestTask r= new RequestTask();
+            requete=""+rdm;
+            r.execute(requete);
+        }else{
+            Res.setText("Veillez activer votre connexion internet");
+        }
+
     }
 
     @Override
