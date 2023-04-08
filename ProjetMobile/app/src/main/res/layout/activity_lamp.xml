@@ -29,7 +29,7 @@
             android:id="@+id/RBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Blue"
+            android:text="@string/blue"
             android:textColor="@color/white"
             android:checked="true"
              />
@@ -38,21 +38,21 @@
             android:id="@+id/RGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Green"
+            android:text="@string/green"
             android:textColor="@color/white"/>
 
         <RadioButton
             android:id="@+id/RPurple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Purple"
+            android:text="@string/purple"
             android:textColor="@color/white"/>
 
         <RadioButton
             android:id="@+id/RRed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Red"
+            android:text="@string/red"
             android:textColor="@color/white"/>
 
     </RadioGroup>

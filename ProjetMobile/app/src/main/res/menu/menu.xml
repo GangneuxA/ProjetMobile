@@ -5,16 +5,16 @@
 
     <item
         android:id="@+id/home"
-        app:showAsAction="always" android:title="home"/>
+        app:showAsAction="always" android:title="@string/home"/>
     <item
         android:id="@+id/wiki"
-        app:showAsAction="always" android:title="wiki"/>
+        app:showAsAction="always" android:title="@string/wiki"/>
     <item
         android:id="@+id/quizz"
-        app:showAsAction="always|withText" android:title="quizz"/>
+        app:showAsAction="always|withText" android:title="@string/quizz"/>
     <item
         android:id="@+id/lamp"
-        app:showAsAction="always" android:title="lamp"/>
+        app:showAsAction="always" android:title="@string/lamp"/>
     <item
         android:id="@+id/exit" app:showAsAction="never" android:title="exit"/>
 

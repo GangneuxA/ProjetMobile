@@ -5,4 +5,17 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="rejouer">Rejouer</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+    <string name="purple">Purple</string>
+    <string name="red">Red</string>
+    <string name="quizz">quizz</string>
+    <string name="lamp">lamp</string>
+    <string name="wiki">wiki</string>
+    <string name="home">home</string>
+    <string name="films">films</string>
+    <string name="species">Species</string>
+    <string name="vehicles">Vehicles</string>
+    <string name="ship">Ship</string>
+    <string name="planet">Planet</string>
 </resources>

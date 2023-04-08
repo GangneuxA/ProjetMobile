@@ -80,7 +80,7 @@
                 android:id="@+id/Rplanets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Planet"
+                android:text="@string/planet"
                 android:textColor="#FFFF00"
                 android:textSize="10dp" />
 
@@ -88,7 +88,7 @@
                 android:id="@+id/Rship"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ship"
+                android:text="@string/ship"
                 android:textColor="#FFFF00"
                 android:textSize="10dp" />
 
@@ -96,7 +96,7 @@
                 android:id="@+id/Rvehicles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vehicles"
+                android:text="@string/vehicles"
                 android:textColor="#FFFF00"
                 android:textSize="10dp" />
 
@@ -104,7 +104,7 @@
                 android:id="@+id/Rspecies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Species"
+                android:text="@string/species"
                 android:textColor="#FFFF00"
                 android:textSize="10dp" />
 
@@ -112,7 +112,7 @@
                 android:id="@+id/Rfilms"
                 android:layout_width="65dp"
                 android:layout_height="wrap_content"
-                android:text="films"
+                android:text="@string/films"
                 android:textColor="#FFFF00"
                 android:textSize="10dp" />
         </RadioGroup>
