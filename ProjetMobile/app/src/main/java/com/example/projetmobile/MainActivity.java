@@ -51,15 +51,7 @@ public class MainActivity extends AppCompatActivity {
         Res=(TextView) findViewById(R.id.res);
 
         //Verifier si l'utilisateur est connecté à Internet
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        Boolean isConnected=false;
-        for (Network network : connMgr.getAllNetworks()) {
-            NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
-            if (networkInfo.isConnected()){
-                isConnected=true;
-            }
-        }
-        if(isConnected){
+        if(isConnected()){
             rdm=(int)(Math.random()*6)+1;
             MainActivity.RequestTask r= new RequestTask();
             requete=""+rdm;
@@ -67,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Res.setText("Veillez activer votre connexion internet");
         }
-
     }
 
     @Override
@@ -76,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    public boolean isConnected(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        Boolean isConnected=false;
+        for (Network network : connMgr.getAllNetworks()) {
+            try{
+                NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
+                if (networkInfo.isConnectedOrConnecting() && networkInfo!=null){
+                    isConnected=true;
+                }
+            }catch (NullPointerException e){
+                isConnected=false;
+            }
+        }
+        return isConnected;
     }
 
     /**
