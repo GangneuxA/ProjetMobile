@@ -33,6 +33,9 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Methode permettant d'inserer les questions/reponses dans la BDD
+     */
     public void insertBasic(){
         SQLiteDatabase db = this.getWritableDatabase();
         onUpgrade(db,1,2);
@@ -52,6 +55,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Methode permettant de récuperer les questions/reponses de la BDD
+     * @return
+     */
     public List<QuestionReponse> QuestionDB(){
         SQLiteDatabase db = this.getWritableDatabase();
         List<QuestionReponse> responses = new ArrayList<>();
@@ -88,43 +95,5 @@ public class DBHandler extends SQLiteOpenHelper {
         return responses;
 
 
-    }
-
-    public List<String> selectAll() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        List<String> responses = new ArrayList<>();
-
-        String[] projection = {
-                DBContract.Form._ID,
-                DBContract.Form.COLUMN_QUESTION,
-                DBContract.Form.COLUMN_REPONSE
-
-        };
-
-        Cursor cursor = db.query(
-                DBContract.Form.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.Form._ID));
-            String question =  cursor.getString(cursor.getColumnIndexOrThrow(DBContract.Form.COLUMN_QUESTION));
-            String reponse =  cursor.getString(cursor.getColumnIndexOrThrow(DBContract.Form.COLUMN_REPONSE));
-            String response = question;
-
-
-            responses.add(response);
-        }
-
-        cursor.close();
-        db.close();
-
-
-        return responses;
     }
 }

@@ -35,7 +35,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class Wiki extends AppCompatActivity {
 
     TextView tResultat, iResultat;
-    Button Wookie;
     EditText e;
     String lien;
     RadioButton c1,c2, c3, c4, c5, c6;
@@ -46,8 +45,15 @@ public class Wiki extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        TextView tResultat = (TextView) findViewById(R.id.tResultat);
+        getSupportActionBar().setIcon(R.drawable.logo);
+        tResultat = (TextView) findViewById(R.id.tResultat);
+        e=(EditText) findViewById (R.id.recherche);
+        c1 = (RadioButton) findViewById(R.id.Rpeople);
+        c2 = (RadioButton) findViewById(R.id.Rplanets);
+        c3 = (RadioButton) findViewById(R.id.Rship);
+        c4 = (RadioButton) findViewById(R.id.Rvehicles);
+        c5 = (RadioButton) findViewById(R.id.Rspecies);
+        c6 = (RadioButton) findViewById(R.id.Rfilms);
     }
 
     @Override
@@ -58,6 +64,11 @@ public class Wiki extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Permet la navigation par la toolBar
+     * @param item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
@@ -66,10 +77,6 @@ public class Wiki extends AppCompatActivity {
                 finishAffinity();
                 startActivity(i);
                 return (true);
-            /*case R.id.wiki:
-                Intent i = new Intent(Wiki.this, Wiki.class);
-                startActivity(i);
-                return (true);*/
             case R.id.quizz:
                 Intent i2 = new Intent(Wiki.this, Quizz.class);
                 finishAffinity();
@@ -85,10 +92,12 @@ public class Wiki extends AppCompatActivity {
                 return (true); }
         return true; }
 
+    /**
+     * Permet de récupérer la valeur inscrite dans l'editText par l'utilisateur et ainsi lancé la requete de recherche
+     * @param view
+     */
     public void go(View view) {
-        e=(EditText) findViewById (R.id.recherche);
         String req =e.getText().toString();
-        tResultat=(TextView) findViewById(R.id.tResultat);
         Wiki.RequestTask r=new Wiki.RequestTask();
         r.execute(req);
     }
@@ -99,6 +108,11 @@ public class Wiki extends AppCompatActivity {
         // Le corps de la tâche asynchrone (exécuté en tâche de fond)
 //  lance la requète
         String retour="";
+        /**
+         * lancé la requete lié a la demande
+         * @param req
+         * @return
+         */
         protected String doInBackground(String... req) {
             String response = requete(req[0]);
             try {
@@ -111,13 +125,12 @@ public class Wiki extends AppCompatActivity {
                 throw new RuntimeException(ex);
             }
         }
+        /**
+         * Permet de récupérer le JSON de l'URL
+         * @param req
+         * @return
+         */
         private String requete(String req) {
-            c1 = (RadioButton) findViewById(R.id.Rpeople);
-            c2 = (RadioButton) findViewById(R.id.Rplanets);
-            c3 = (RadioButton) findViewById(R.id.Rship);
-            c4 = (RadioButton) findViewById(R.id.Rvehicles);
-            c5 = (RadioButton) findViewById(R.id.Rspecies);
-            c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             try {
                 HttpsURLConnection connection = null;
@@ -178,14 +191,13 @@ public class Wiki extends AppCompatActivity {
             return response;
         }
 
+        /**
+         * Permet de faire le parsing du JSON récupérer
+         * @param jso
+         * @return
+         * @throws Exception
+         */
         private String decodeJSON(JSONObject jso) throws Exception {
-
-            c1 = (RadioButton) findViewById(R.id.Rpeople);
-            c2 = (RadioButton) findViewById(R.id.Rplanets);
-            c3 = (RadioButton) findViewById(R.id.Rship);
-            c4 = (RadioButton) findViewById(R.id.Rvehicles);
-            c5 = (RadioButton) findViewById(R.id.Rspecies);
-            c6 = (RadioButton) findViewById(R.id.Rfilms);
             String response = "";
             JSONArray jsoResult=jso.getJSONArray("results");
 
@@ -404,18 +416,28 @@ public class Wiki extends AppCompatActivity {
             return response;
         }
 
-        // Méthode appelée lorsque la tâche de fond sera terminée
-        //  Affiche le résultat
+        /**
+         * Affichage du résultat de la requete
+         * @param result
+         */
         protected void onPostExecute(String result) {
             JSONObject toDecode = null;
             try {
-               // toDecode = new JSONObject(result);
                 tResultat.setText(result);
             } catch (Exception e) {
                 tResultat.setText("error parsing JSON");
             }
 
         }
+
+        /**
+         * Class permettant de pouvoir gérer les sous-requetes dans la requete principale
+         * @param req
+         * @param id
+         * @return
+         * @throws MalformedURLException
+         * @throws JSONException
+         */
         protected String reqI(String req, int id) throws MalformedURLException, JSONException {
             String response2="";
             try {

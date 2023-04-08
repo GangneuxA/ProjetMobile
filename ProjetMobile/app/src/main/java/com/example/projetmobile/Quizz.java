@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,12 +23,13 @@ import java.util.Random;
 public class Quizz extends AppCompatActivity {
 
     DBHandler db;
-    LinearLayout ll ;
     public int num_rep;
     int valide;
     int nb_try;
     ArrayList<Integer> q = new ArrayList<Integer>();
-    Button r ;
+    Button r , next, valid;
+    TextView ques;
+    EditText e;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,19 +37,27 @@ public class Quizz extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setIcon(R.drawable.logo);
         db = new DBHandler(this);
         db.insertBasic();
-        num_rep = Question();
         valide = 0;
         nb_try = 0;
         r = (Button) findViewById(R.id.rejouer);
         r.setVisibility(View.INVISIBLE);
+        ques = (TextView) findViewById(R.id.Question);
+        next = (Button) findViewById(R.id.Suivante);
+        valid = (Button) findViewById(R.id.valider);
+        e = (EditText) findViewById(R.id.Reponse);
+        num_rep = Question();
     }
 
 
+    /**
+     * Methode permettant de génerer une question de la BDD
+     * @return
+     */
     public int Question(){
         boolean b = false;
-        TextView t = (TextView) findViewById(R.id.Question);
         List<QuestionReponse> result = db.QuestionDB();
         Random random = new Random();
         int i = (int) random.nextInt(result.size());
@@ -63,22 +71,25 @@ public class Quizz extends AppCompatActivity {
             }
         }
         q.add(i);
-        t.setText(result.get(i).getQuestion());
-        t.setBackgroundResource(R.color.purple_200);
-        Button next = (Button) findViewById(R.id.Suivante);
+        ques.setText(result.get(i).getQuestion());
+        ques.setBackgroundResource(R.color.purple_200);
         next.setVisibility(View.INVISIBLE);
         return i;
 
     }
+
+    /**
+     * Methode permettant de vérifier la reponse de la BDD avec la reponse rentré par l'utilisateur
+     * @param v
+     * @throws InterruptedException
+     */
     public void valide(View v) throws InterruptedException {
         nb_try++;
         List<QuestionReponse> result = db.QuestionDB();
-        EditText e = (EditText) findViewById(R.id.Reponse);
         String rep = e.getText().toString();
-        TextView t = (TextView) findViewById(R.id.Question);
         String dbR = result.get(num_rep).getReponse();
         if(rep.toLowerCase(Locale.ROOT).equals(dbR.toLowerCase(Locale.ROOT))){
-            t.setBackgroundResource(R.color.green);
+            ques.setBackgroundResource(R.color.green);
             valide++;
             e.setText("");
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -88,7 +99,7 @@ public class Quizz extends AppCompatActivity {
             Button next = (Button) findViewById(R.id.Suivante);
             next.setVisibility(View.VISIBLE);
         }else{
-            t.setBackgroundResource(R.color.warm);
+            ques.setBackgroundResource(R.color.warm);
             Button next = (Button) findViewById(R.id.Suivante);
             next.setVisibility(View.VISIBLE);
             e.setText("");
@@ -97,22 +108,27 @@ public class Quizz extends AppCompatActivity {
         s.setText("Score : "+valide+" / "+nb_try);
     }
 
+    /**
+     * Permet l'affichage des boutons selon la situation du quizz
+     * @param v
+     */
     public void aff(View v) {
-        TextView t = (TextView) findViewById(R.id.Question);
-        Button b = (Button) findViewById(R.id.valider);
-        Button next = (Button) findViewById(R.id.Suivante);
         if(q.size()!=10){
             num_rep = Question();
-            b.setVisibility(View.VISIBLE);
+            valid.setVisibility(View.VISIBLE);
         }else{
             r.setVisibility(View.VISIBLE);
-            t.setBackgroundResource(R.color.green);
-            t.setText("Quizz is finish, good job and try again for a better score !");
-            b.setVisibility(View.INVISIBLE);
+            ques.setBackgroundResource(R.color.green);
+            ques.setText("Quizz is finish, good job and try again for a better score !");
+            valid.setVisibility(View.INVISIBLE);
             next.setVisibility(View.INVISIBLE);
         }
     }
 
+    /**
+     * Methode permettant de relancer un quizz
+     * @param v
+     */
     public void rejouer(View v){
         Intent i = new Intent(Quizz.this, Quizz.class);
         finishAffinity();
@@ -126,6 +142,11 @@ public class Quizz extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Permet la navigation sur la toolBar
+     * @param item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
@@ -153,6 +174,9 @@ public class Quizz extends AppCompatActivity {
                 return (true); }
         return true; }
 
+    /**
+     * Permet la fermeture de la BDD
+     */
     protected void onDestroy() {
         super.onDestroy();
         db.close();

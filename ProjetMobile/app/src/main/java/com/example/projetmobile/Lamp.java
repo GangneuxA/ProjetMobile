@@ -10,6 +10,7 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ public class Lamp extends AppCompatActivity {
     private ImageButton saber;
     boolean hasCameraFlash = false;
     boolean flashON = false;
+    RadioButton c1,c2,c3,c4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,13 @@ public class Lamp extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setIcon(R.drawable.logo);
         saber = (ImageButton) findViewById(R.id.img);
         hasCameraFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-
+        c1 = (RadioButton) findViewById(R.id.RBlue);
+        c2 = (RadioButton) findViewById(R.id.RGreen);
+        c3 = (RadioButton) findViewById(R.id.RPurple);
+        c4 = (RadioButton) findViewById(R.id.RRed);
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -43,6 +49,11 @@ public class Lamp extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Permet la navigation avec la toolBar
+     * @param item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
@@ -70,12 +81,12 @@ public class Lamp extends AppCompatActivity {
                 return (true); }
         return true; }
 
+    /**
+     * Methode qui gére l'affichage des images selon si l'utilisateur veut allumer ou éteindre la lampe torche du téléphone
+     * @param v
+     * @throws CameraAccessException
+     */
     public void flash(View v) throws CameraAccessException {
-        RadioButton c1 = (RadioButton) findViewById(R.id.RBlue);
-        RadioButton c2 = (RadioButton) findViewById(R.id.RGreen);
-        RadioButton c3 = (RadioButton) findViewById(R.id.RPurple);
-        RadioButton c4 = (RadioButton) findViewById(R.id.RRed);
-
         if(hasCameraFlash){
             if(flashON){
                 flashON = false;
@@ -105,12 +116,20 @@ public class Lamp extends AppCompatActivity {
         }
     }
 
+    /**
+     * Methode permettant d'allumer la lampe torche du téléphone
+     * @throws CameraAccessException
+     */
     private void flashLightOn() throws CameraAccessException {
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         String cameraID = cameraManager.getCameraIdList()[0];
         cameraManager.setTorchMode(cameraID, true);
     }
 
+    /**
+     * Methode permettant d'éteindre la lampe torche du téléphone
+     * @throws CameraAccessException
+     */
     private void flashLightOff() throws CameraAccessException {
         CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         String cameraID = cameraManager.getCameraIdList()[0];

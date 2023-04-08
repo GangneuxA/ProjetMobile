@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     int rdm;
     String requete;
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.logo);
         Res=(TextView) findViewById(R.id.res);
 
+        //Verifier si l'utilisateur est connecté à Internet
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         Boolean isConnected=false;
         for (Network network : connMgr.getAllNetworks()) {
@@ -76,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Permet la navigation par la toolBar
+     * @param item
+     * @return
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         TextView txt;
         switch (item.getItemId()) {
@@ -100,12 +107,22 @@ public class MainActivity extends AppCompatActivity {
         return true; }
 
     private class RequestTask extends AsyncTask<String, Void, String> {
-        // Le corps de la tâche asynchrone (exécuté en tâche de fond)
-//  lance la requète
+
+        /**
+         * lancé la requete lié a la demande
+         * @param req
+         * @return
+         */
         protected String doInBackground(String... req) {
             String response = requete(req[0]);
             return response;
         }
+
+        /**
+         * Permet de récupérer le JSON de l'URL
+         * @param req
+         * @return
+         */
         private String requete(String req) {
             String response = "";
             try {
@@ -133,13 +150,22 @@ public class MainActivity extends AppCompatActivity {
             return response;
         }
 
+        /**
+         * Permet de faire le parsing du JSON récupérer
+         * @param jso
+         * @return
+         * @throws Exception
+         */
         private String decodeJSON(JSONObject jso) throws Exception {
             String response = "";
             response = jso.getString("opening_crawl");
             return response;
         }
-        // Méthode appelée lorsque la tâche de fond sera terminée
-        //  Affiche le résultat
+
+        /**
+         * Permet l'affichage du parsing du JSON
+         * @param result
+         */
         protected void onPostExecute(String result) {
             JSONObject toDecode = null;
             try {
