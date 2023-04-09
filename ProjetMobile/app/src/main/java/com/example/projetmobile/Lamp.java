@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.Image;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -87,14 +88,19 @@ public class Lamp extends AppCompatActivity {
      * @throws CameraAccessException
      */
     public void flash(View v) throws CameraAccessException {
+        MediaPlayer sound;
         if(hasCameraFlash){
             if(flashON){
                 flashON = false;
                 saber.setImageResource(R.drawable.sabre_eteint);
                 flashLightOff();
+                sound=MediaPlayer.create(this,R.raw.light_saber_off);
+                sound.start();
             }
             else{
                 flashON = true;
+                sound=MediaPlayer.create(this,R.raw.light_saber_on);
+                sound.start();
                 if(c1.isChecked()){
                     saber.setImageResource(R.drawable.sabre_bleu);
                     flashLightOn();

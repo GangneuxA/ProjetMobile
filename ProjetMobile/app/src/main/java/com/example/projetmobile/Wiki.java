@@ -40,14 +40,19 @@ public class Wiki extends AppCompatActivity {
     RadioButton c1,c2, c3, c4, c5, c6;
 
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wiki);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setIcon(R.drawable.logo);
+
         tResultat = (TextView) findViewById(R.id.tResultat);
         e=(EditText) findViewById (R.id.recherche);
+
         c1 = (RadioButton) findViewById(R.id.Rpeople);
         c2 = (RadioButton) findViewById(R.id.Rplanets);
         c3 = (RadioButton) findViewById(R.id.Rship);
