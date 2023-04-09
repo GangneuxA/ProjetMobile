@@ -3,7 +3,11 @@ package com.example.projetmobile;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -102,9 +106,34 @@ public class Wiki extends AppCompatActivity {
      * @param view
      */
     public void go(View view) {
-        String req =e.getText().toString();
-        Wiki.RequestTask r=new Wiki.RequestTask();
-        r.execute(req);
+        if(isConnected()){
+            String req =e.getText().toString();
+            Wiki.RequestTask r=new Wiki.RequestTask();
+            r.execute(req);
+        }else{
+            tResultat.setText("Veuillez activer votre connexion internet");
+        }
+
+    }
+
+    /**
+     * Methode pour verifier la connexion de l'utilisateur ( téléphone <= API 29 )
+     * @return
+     */
+    public boolean isConnected(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        Boolean isConnected=false;
+        for (Network network : connMgr.getAllNetworks()) {
+            try{
+                NetworkInfo networkInfo = connMgr.getNetworkInfo(network);
+                if (networkInfo.isConnectedOrConnecting() && networkInfo!=null){
+                    isConnected=true;
+                }
+            }catch (NullPointerException e){
+                isConnected=false;
+            }
+        }
+        return isConnected;
     }
 
 

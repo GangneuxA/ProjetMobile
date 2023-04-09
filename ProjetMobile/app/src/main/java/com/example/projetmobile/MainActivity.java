@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             requete=""+rdm;
             r.execute(requete);
         }else{
-            Res.setText("Veillez activer votre connexion internet");
+            Res.setText("Veuillez activer votre connexion internet");
         }
     }
 
