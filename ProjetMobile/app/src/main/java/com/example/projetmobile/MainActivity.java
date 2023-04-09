@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Methode pour verifier la connexion de l'utilisateur ( téléphone <= API 29 )
+     * @return
+     */
     public boolean isConnected(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         Boolean isConnected=false;
