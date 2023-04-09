@@ -39,7 +39,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     public void insertBasic(){
         SQLiteDatabase db = this.getWritableDatabase();
-        //onUpgrade(db,1,2);
+        onUpgrade(db,1,2);
         String[] Questions={"What is the name of the first star wars movie ?", "What is the name of the yellow droid?","Who is Leia Organa's brother?",
                 "What is the name of Han Solo's best friend?","What is the name of the creator of Star Wars","Who fight anakin on Mustafar?",
                 "When was the first Star Wars movie released?","What is the name of Han Solo's starship?","Who is the creator of C3-PO?","What planet was Anakin born on?"};
