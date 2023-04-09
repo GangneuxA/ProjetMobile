@@ -83,7 +83,7 @@ public class Lamp extends AppCompatActivity {
         return true; }
 
     /**
-     * Methode qui gére l'affichage des images selon si l'utilisateur veut allumer ou éteindre la lampe torche du téléphone
+     * Methode qui gére l'affichage des images et du son selon si l'utilisateur veut allumer ou éteindre la lampe torche du téléphone
      * @param v
      * @throws CameraAccessException
      */
